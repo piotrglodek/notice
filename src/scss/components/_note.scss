@@ -1,0 +1,77 @@
+.notes {
+ display: flex;
+ flex-wrap: wrap;
+ padding: $gutter;
+ margin: 0;
+ list-style-type: none;
+}
+
+.note {
+ width: 100%;
+ padding: $gutter;
+ @media screen and (min-width: 768px) {
+  width: 50%;
+ }
+ @media screen and (min-width: 1286px) {
+  width: 25%;
+ }
+
+ &__container {
+  height: 28rem;
+  border: 2px solid $primary;
+  background-color: rgba(250, 44, 44, 0.4);
+  border-radius: 0.6rem;
+  padding: $gutter;
+  position: relative;
+ }
+
+ &__title,
+ &__description {
+  margin-top: 0;
+ }
+
+ &__title {
+  font-weight: 700;
+  font-size: 2.4rem;
+  color: $primary;
+  text-transform: capitalize;
+ }
+
+ &__description {
+  font-size: 1.6rem;
+  color: #474a5c;
+  height: 18rem;
+  overflow: auto;
+  text-transform: capitalize;
+ }
+
+ &__deleteBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+
+  &::after,
+  &::before {
+   content: '';
+   display: block;
+   width: 1.8rem;
+   height: 0.2rem;
+   background-color: $primary;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   border-radius: 0.2rem;
+  }
+
+  &::after {
+   transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &::before {
+   transform: translate(-50%, -50%) rotate(-45deg);
+  }
+ }
+}

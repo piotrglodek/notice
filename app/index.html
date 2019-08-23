@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Notice</title>
+  <link rel="stylesheet" href="index.css" />
+ </head>
+ <body>
+  <nav class="nav">
+   <h1 class="nav__logo"><span class="nav__circle">N</span>otice</h1>
+   <button class="nav__btn">about</button>
+  </nav>
+  <main class="main">
+   <div class="main__col">
+    <img src="./img/note.svg" alt="note" class="main__img" />
+   </div>
+   <div class="main__col">
+    <form class="form">
+     <input class="form__input" type="text" placeholder="note title" required />
+     <textarea
+      class="form__textarea"
+      cols="30"
+      rows="10"
+      placeholder="note description"
+      required
+     ></textarea>
+     <input class="form__submit" type="submit" value="create note" />
+    </form>
+   </div>
+  </main>
+  <ul class="notes"></ul>
+  <div class="about">
+   <span class="about__close"></span>
+   <p class="about__text">
+    This is simple note app build only with HTML, CSS and JS.
+   </p>
+  </div>
+  <script src="index.js"></script>
+ </body>
+</html>

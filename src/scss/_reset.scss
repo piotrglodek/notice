@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+
+*,
+* ::after,
+* ::before {
+ box-sizing: border-box;
+}
+
+html {
+ font-size: 62.5%;
+}
+
+body {
+ font-size: 1rem;
+ margin: 0;
+ font-family: $fontFamily;
+ background-image: url($bodyImage);
+ background-repeat: repeat;
+}
