@@ -1,75 +1,101 @@
 const app = {
- navButton: document.querySelector('.nav__btn'),
- aboutCloseButton: document.querySelector('.about__close'),
- noteCreatorForm: document.querySelector('.form'),
- notes: document.querySelector('.notes'),
  data: [],
- showAbout: function() {
-  this.aboutCloseButton.parentNode.classList.add('about__active'); // show about section popup
+ getElement: function(classname) { // arg1: classname of tag you want get sytnax: '.classname'
+  const tag = document.querySelector(classname);
+  return tag;
  },
- closeAbout: function() {
-  this.aboutCloseButton.parentNode.classList.remove('about__active'); // close about section popup
+ showAbout: function() {
+  this.getElement('.about').classList.add('about__active');
+ },
+ closeAbout:function(){
+  this.getElement('.about').classList.remove('about__active');
  },
  bindEvents: function() {
-  // bind events
-  this.navButton.addEventListener('click', this.showAbout.bind(this));
-  this.aboutCloseButton.addEventListener('click', this.closeAbout.bind(this));
-  this.noteCreatorForm.addEventListener('submit', this.createNote.bind(this));
-  console.log('binded events');
+  this.getElement('.nav__btn').addEventListener('click',this.showAbout.bind(this));
+  this.getElement('.about__close').addEventListener('click',this.closeAbout.bind(this));
+  this.getElement('.form').addEventListener('submit', this.createNote.bind(this));
  },
- createNodes: function(title, description) {
-  // create dom structure for note and append to notes container
-  const fragment = document.createDocumentFragment();
-  const note = document.createElement('li');
-  note.classList.add('note');
-
-  const noteContainer = document.createElement('div');
-  noteContainer.classList.add('note__container');
-
-  const noteDeleteBtn = document.createElement('span');
-  noteDeleteBtn.classList.add('note__deleteBtn');
-  noteDeleteBtn.addEventListener('click', e => this.deleteNote(e.target)); // add delete event to note btn
-
-  const noteTitle = document.createElement('h2');
-  noteTitle.classList.add('note__title');
-  noteTitle.textContent = title;
-
-  const noteDescription = document.createElement('p');
-  noteDescription.classList.add('note__description');
-  noteDescription.textContent = description;
-
-  fragment.appendChild(note);
-  note.appendChild(noteContainer);
-  noteContainer.appendChild(noteTitle);
-  noteContainer.appendChild(noteDescription);
-  noteContainer.appendChild(noteDeleteBtn);
-
-  this.notes.appendChild(fragment);
- },
- createNote: function(e) {
+ createNote:function(e){
   e.preventDefault();
-  const title = document.querySelector('.form__input');
-  const description = document.querySelector('.form__textarea');
-
-  if (title && description != '') {
-   // check if value is not empty
+  const title = e.target[0];
+  const description = e.target[1];
+  if(title.value != '' && description.value != ''){
    this.createNodes(title.value, description.value);
+   this.saveNoteToData(title.value, description.value);
    title.value = '';
    description.value = '';
-   this.saveNotes();
   }
  },
- deleteNote: function(noteToDelete) {
-  const parent = noteToDelete.parentNode.parentNode;
-  console.log('deleted');
-  this.notes.removeChild(parent);
-  this.saveNotes();
+ createTag:function(tagName, tagClass, tagText){ // arg1: html tag name e.g p, ul,li, arg2: classname of tag you can leave empty, arg3: text of tag also you can leave empty
+  const tag = document.createElement(tagName);
+  tag.classList.add(tagClass);
+  tag.textContent = tagText;
+  return tag;
  },
- saveNotes: function() {
-  console.log('saved notes to local storage');
+ appendChildrens:function(parentTag, childrens){ // arg1: createdTag arg2: array of childrens(createdTags) to append
+   for(let i = 0; i<childrens.length; i++){
+    parentTag.appendChild(childrens[i]);
+   }
+   return parentTag;
+ },
+ createNodes:function(noteTitle, noteDescription){
+  const fragment = document.createDocumentFragment(),
+   li = this.createTag('li', 'note'),
+   div = this.createTag('div', 'note__container'),
+   deleteBtn = this.createTag('button','note__deleteBtn'),
+   h2 = this.createTag('h2', 'note__title', noteTitle),
+   p = this.createTag('p', 'note__description', noteDescription);
+   
+  deleteBtn.addEventListener('click', e=>this.deleteNote(e.target)); // delete note
+
+  fragment.appendChild(li);
+  li.appendChild(div);
+  this.appendChildrens(div, [deleteBtn, h2, p]);
+  this.getElement('.notes').appendChild(fragment);
+ },
+ deleteNote:function(target) {
+  const noteToDelete = target.parentNode.parentNode;
+  this.getElement('.notes').removeChild(noteToDelete);
+  console.log('note has been deleted');
+  this.deleteNoteFromStorage(target);
+ },
+ saveNoteToData:function(noteTitle,noteDescription ){
+  const note = {
+   title: noteTitle,
+   description: noteDescription
+  };
+  this.data.push(note);
+  this.saveNoteToLocalStorage();
+ },
+ saveNoteToLocalStorage:function(){
+  localStorage.setItem('notes', JSON.stringify(this.data));
+  console.log('note has been saved to storage');
+ },
+ checkIfDataIsEmpty:function(){
+  if(localStorage.getItem('notes')){
+   const notes = localStorage.getItem('notes');
+   this.data = JSON.parse(notes);
+   console.log('data has been updated');
+   this.renderNotes();
+   console.log('notes has been rendered');
+  }
+ },
+ deleteNoteFromStorage:function(target){
+  const title = target.nextSibling.textContent;
+  const newData = this.data.filter(note=>{
+    return note.title != title
+  });
+  this.data = newData;
+  this.saveNoteToLocalStorage();
+ },
+ renderNotes:function(){
+  this.data.forEach(note=>{
+    this.createNodes(note.title,note.description);
+  });
  },
  init: function() {
   this.bindEvents();
+  this.checkIfDataIsEmpty();
  }
 };
 app.init();
