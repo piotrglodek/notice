@@ -46,6 +46,10 @@
  }
 
  &__deleteBtn {
+  display: block;
+  background: 0 0;
+  border: none;
+  outline: 0;
   position: absolute;
   top: 0;
   right: 0;
