@@ -1,16 +1,10 @@
 # Notice
 
-## Table of contents
-
-- [About](#about)
-- [Technologies](#technologies)
-- [Features](#features)
-
-### About
+## About
 
 A simple note app.
 
-### Technologies
+## Technologies
 
 Project is created with:
 
@@ -18,6 +12,10 @@ Project is created with:
 - CSS3
 - JavaScript
 
-### Features
+## Added features
 
 + Added note is saved in local storage.
+
+## Future Features
+
++ After adding note, snackbar is displayed. 
