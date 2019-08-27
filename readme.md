@@ -1,5 +1,7 @@
 # Notice
 
+![alt text](https://github.com/piotrglodek/notice/blob/master/app/img/notice.png "Notice")
+
 ## About
 
 A simple note app.
